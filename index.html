@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="btn-minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="addProduct" type="text" class="form-control text-center" value="1">
+                           <button id="btn-plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h2>$ <span id="totalPrice">1240</span></h2>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="btn-product-minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="product-inc-dec" type="text" class="form-control text-center" value="1">
+                           <button id="btn-product-add" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$ <span id="iphone-cover">59</span> </h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$ <span id="sub-total">1299</span></h5>
+                        <h5>$0</h5>
+                        <h5>$ <span id="total">1299</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <script>
+
+      const btnPlus = document.getElementById("btn-plus");
+      btnPlus.addEventListener('click', function () {
+         const numberOfProduct = getInputValue("addProduct");
+         const totalProduct = numberOfProduct + 1;
+         document.getElementById("addProduct").value = totalProduct;
+         const numberOfPrice = getInput("totalPrice");
+         const totalPrice = totalProduct * 1240;
+         //totalCost("totalPrice", "sub-total", "total", totalPrice);
+
+         const iPhonePrice = getInput("iphone-cover");
+         const subTotal = totalPrice + iPhonePrice;
+         document.getElementById("totalPrice").innerText = totalPrice;
+         totalCost("sub-total","total",subTotal);
+
+
+      })
+      //var totalProductCount = 1;
+
+      const btnMinus = document.getElementById("btn-minus");
+      btnMinus.addEventListener('click', function () {
+         const numberOfProduct = getInputValue("addProduct");
+         if (numberOfProduct > 1) {
+            const totalProductCount = numberOfProduct - 1;
+            document.getElementById("addProduct").value = totalProductCount;
+            const numberOfPrice = getInput("sub-total");
+            console.log("minus numberOfPrice", numberOfPrice);
+            const totalPrice = numberOfPrice - 1240;
+            document.getElementById("totalPrice").innerText = totalPrice;
+            totalCost("sub-total","total",totalPrice);
+            //totalCost("totalPrice", "sub-total", "total", totalPrice);
+            
+         }
+      })
+
+
+      const btnProductAdd = document.getElementById("btn-product-add");
+      btnProductAdd.addEventListener('click',function(){
+         const numberOfAddProduct = getInputValue("product-inc-dec");
+         const totalProduct = numberOfAddProduct + 1 ;
+         document.getElementById("product-inc-dec").value = totalProduct;
+         const totalPrice = totalProduct * 59;
+         const iPhonePrice = getInput("totalPrice");
+         const subTotal = totalPrice + iPhonePrice;
+         console.log('iPhonePrice',iPhonePrice);
+         document.getElementById("iphone-cover").innerText = totalPrice;
+         totalCost("sub-total","total",subTotal);
+      })
+
+
+      const btnProductMinus = document.getElementById("btn-product-minus");
+      btnProductMinus.addEventListener('click', function(){
+
+         const numberOfProduct = getInputValue("product-inc-dec");
+         if (numberOfProduct > 1) {
+            const totalProductCount = numberOfProduct - 1;
+            document.getElementById("product-inc-dec").value = totalProductCount;
+            const numberOfPrice = getInput("sub-total");
+            console.log("minus numberOfPrice", numberOfPrice);
+            const totalPrice = numberOfPrice - 59;
+            document.getElementById("iphone-cover").innerText = totalProductCount * 59;
+            totalCost("sub-total","total",totalPrice);
+            //totalCost("totalPrice", "sub-total", "total", totalPrice);
+            
+         }
+
+      })
+
+
+
+
+      function totalCost(subID, totalID, totalPrice) {
+         //document.getElementById(priceID).innerText = totalPrice;
+         document.getElementById(subID).innerText = totalPrice;
+         document.getElementById(totalID).innerText = totalPrice;
+      }
+
+      function getInputValue(id) {
+         const amountOfProduct = document.getElementById(id).value;
+         const numberOfProduct = parseFloat(amountOfProduct);
+         return numberOfProduct;
+      }
+
+      function getInput(id) {
+         const price = document.getElementById(id).innerText;
+         const numberOfPrice = parseFloat(price);
+         return numberOfPrice;
+      }
+
+      function setPrice(id, totalProduct, numberOfPrice) {
+         const totalPrice = totalProduct * numberOfPrice;
+         document.getElementById(id).innerText = totalPrice;
+      }
+
+   </script>
+
+</body>
+
+</html>
